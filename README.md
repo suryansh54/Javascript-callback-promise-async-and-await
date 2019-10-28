@@ -1,6 +1,6 @@
 # Javascript Callback, Promise and async/await
 
-### Synchronous and Asynchronous
+## Synchronous and Asynchronous
 
 Synchronous Call | Asynchronous Call
 ------------ | -------------
@@ -8,7 +8,7 @@ A callback in which the code execution waits for an event before continuing. | A
 Code execution waits for the event before continuing. | Do not block the program from the code execution.
 Programmer can use synchronous callbacks when it is necessary to execute tasks in a sequence and when it does not require much time for execution. | Programmer can use asynchronous callbacks when the tasks are not dependent on each other and when it takes time for execution.
 
-### Callback
+## Callback
 
 JavaScript is synchronous by default, and is single threaded. This means that code cannot create new threads and run in parallel. Find out what asynchronous code means and how it looks like
 
@@ -46,7 +46,7 @@ setTimeout(() => {
 **Question:** Callback is synchronous or asynchronous.
 **Answer:** 
 
-### Promise
+## Promise
 
 <ul>
   <li>The **Promise** object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.</li>
@@ -134,4 +134,131 @@ new Promise(function(resolve, reject) {
 // 12
 ```
 
-### async/await
+### Promise Properties
+
+**Promise.length**
+Length property whose value is always 1 (number of constructor arguments).
+
+**Promise.prototype**
+Represents the prototype for the Promise constructor.
+
+### Promise Methods
+
+**Promise.all(iterable)**
+Wait for all promises to be resolved, or for any to be rejected.
+If the returned promise resolves, it is resolved with an aggregating array of the values from the resolved promises in the same order as defined in the iterable of multiple promises. If it rejects, it is rejected with the reason from the first promise in the iterable that was rejected.
+
+```javascript
+var promise1 = Promise.resolve(3);
+var promise2 = 42;
+var promise3 = new Promise(function(resolve, reject) {
+  setTimeout(resolve, 100, 'foo');
+});
+
+Promise.all([promise1, promise2, promise3]).then(function(values) {
+  console.log(values);
+});
+// expected output: Array [3, 42, "foo"]
+```
+
+**Promise.allSettled(iterable)**
+Wait until all promises have settled (each may resolve, or reject).
+Returns a promise that resolves after all of the given promises have either resolved or rejected, with an array of objects that each describe the outcome of each promise.
+
+```javascript
+const promise1 = Promise.resolve(3);
+const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
+const promises = [promise1, promise2];
+
+Promise.allSettled(promises).
+  then((results) => results.forEach((result) => console.log(result.status)));
+
+// expected output:
+// "fulfilled"
+// "rejected"
+```
+
+**Promise.race(iterable)**
+Wait until any of the promises is resolved or rejected.
+If the returned promise resolves, it is resolved with the value of the first promise in the iterable that resolved. If it rejects, it is rejected with the reason from the first promise that was rejected.
+
+```javascript
+var promise1 = new Promise(function(resolve, reject) {
+    setTimeout(resolve, 500, 'one');
+});
+
+var promise2 = new Promise(function(resolve, reject) {
+    setTimeout(resolve, 100, 'two');
+});
+
+Promise.race([promise1, promise2]).then(function(value) {
+  console.log(value);
+  // Both resolve, but promise2 is faster
+});
+// expected output: "two"
+```
+
+**Promise.reject(reason)**
+Returns a new Promise object that is rejected with the given reason.
+
+```javascript
+function resolved(result) {
+  console.log('Resolved');
+}
+
+function rejected(result) {
+  console.error(result);
+}
+
+Promise.reject(new Error('fail')).then(resolved, rejected);
+// expected output: Error: fail
+```
+
+**Promise.resolve(value)**
+Returns a new Promise object that is resolved with the given value. If the value is a thenable (i.e. has a then method), the returned promise will "follow" that thenable, adopting its eventual state; otherwise the returned promise will be fulfilled with the value. Generally, if you don't know if a value is a promise or not, Promise.resolve(value) it instead and work with the return value as a promise.
+
+```javascript
+var promise1 = Promise.resolve(123);
+promise1.then(function(value) {
+  console.log(value);
+  // expected output: 123
+});
+```
+
+### Promise Prototype
+
+**Promise.prototype.catch()**
+Appends a rejection handler callback to the promise, and returns a new promise resolving to the return value of the callback if it is called, or to its original fulfillment value if the promise is instead fulfilled.
+
+```javascript
+var promise1 = new Promise(function(resolve, reject) {
+  throw 'Uh-oh!';
+});
+
+promise1.catch(function(error) {
+  console.error(error);
+});
+```
+
+**Promise.prototype.then()**
+Appends fulfillment and rejection handlers to the promise, and returns a new promise resolving to the return value of the called handler, or to its original settled value if the promise was not handled (i.e. if the relevant handler onFulfilled or onRejected is not a function).
+
+**Promise.prototype.finally()**
+Appends a handler to the promise, and returns a new promise which is resolved when the original promise is resolved. The handler is called when the promise is settled, whether fulfilled or rejected.
+
+```javascript
+let isLoading = true;
+
+fetch(myRequest).then(function(response) {
+    var contentType = response.headers.get("content-type");
+    if(contentType && contentType.includes("application/json")) {
+      return response.json();
+    }
+    throw new TypeError("Oops, we haven't got JSON!");
+  })
+  .then(function(json) { /* process your JSON further */ })
+  .catch(function(error) { console.error(error); /* this line can also throw, e.g. when console = {} */ })
+  .finally(function() { isLoading = false; });
+```
+
+## async/await
