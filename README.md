@@ -64,6 +64,8 @@ setTimeout(() => {
 	</li>
 </ul>
 
+[Promise image](/assets/promises.png)
+
 **Question** Which JS APIs use promises?
 In addition to your own code and libraries code, promises are used by standard modern Web APIs such as:
 
