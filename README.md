@@ -49,17 +49,29 @@ setTimeout(() => {
 ## Promise
 
 <ul>
-<li>The <b>Promise</b> object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.</li>
-  <li>A <b>Promise</b> is a special kind of javascript object which contains another object</li>
-  <li><b>Promises are eager</b>, meaning that a promise will start doing whatever task you give it as soon as the promise constructor is invoked. If you need lazy, check out observables or tasks.</li>
-  <li>A Promise is in one of these states:
-    <ul>
-      <li><b>pending</b>: initial state, neither fulfilled nor rejected.</li>
-      <li><b>fulfilled</b>: meaning that the operation completed successfully.</li>
-      <li><b>rejected</b>: meaning that the operation failed.</li>
-    </ul>
-  </li>
+	<li>The <b>Promise</b> object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.</li>
+	<li>A promise is commonly defined as a proxy for a value that will eventually become available.</li>
+	<li>Promises are one way to deal with asynchronous code, without getting stuck in callback hell.</li>
+	<li>Promises have been part of the language for years (standardized and introduced in ES2015), and have recently become more integrated, with async and await in ES2017.</li>
+	<li>Async functions use promises behind the scenes, so understanding how promises work is fundamental to understanding how async and await work.</li>
+	<li><b>Promises are eager</b>, meaning that a promise will start doing whatever task you give it as soon as the promise constructor is invoked. If you need lazy, check out observables or tasks.</li>
+	<li>A Promise is in one of these states:
+		<ul>
+			<li><b>pending</b>: initial state, neither fulfilled nor rejected.</li>
+			<li><b>fulfilled</b>: meaning that the operation completed successfully.</li>
+			<li><b>rejected</b>: meaning that the operation failed.</li>
+		</ul>
+	</li>
 </ul>
+
+**Question** Which JS APIs use promises?
+In addition to your own code and libraries code, promises are used by standard modern Web APIs such as:
+
+- the Battery API
+- the Fetch API
+- Service Workers
+
+It's unlikely that in modern JavaScript you'll find yourself not using promises, so let's start diving right into them.
 
 A **Simple** way to create a promise:
 
@@ -260,5 +272,70 @@ fetch(myRequest).then(function(response) {
   .catch(function(error) { console.error(error); /* this line can also throw, e.g. when console = {} */ })
   .finally(function() { isLoading = false; });
 ```
+**Random example on promise**
+
+```javascript
+// A asyncronous Promise is created with 'new Promise( (resolve, reject) => {...} )'
+
+// resolve() and reject() are how we stop the promise execution. 
+// Note: Promise execution does not stop at the last line of the handler function. only reject() or resolve() do that.
+
+// A Promise is resolved only once, regardless of how many then() handlers
+let unresolvedPromise = new Promise( 
+  (resolve, reject) => {
+    setTimeout(function () { resolve(3) }, 3000)
+  }
+)
+
+unresolvedPromise.then(innerValue => console.log('resolved with: ', innerValue)) 
+// the then() handler is called when the promise is resolved
+
+console.log('unresolvedPromise state is: ', unresolvedPromise);
+console.log('LAST LINE IN THIS FILE');
+```
+
+```javascript
+// whether the value will be there in future, or it’s already known, I just call `then()` in either case
+// the `then()` handler is always called asyncronously [i.e.: behaves like using setTimeout(..., 0)]
+
+let resolvedPromise = Promise.resolve('someValue')
+
+let unresolvedPromise = new Promise( 
+  (resolve, reject) => {
+    setTimeout(function () { resolve(3) }, 3000)
+  }
+)
+
+unresolvedPromise.then(innerValue => console.log('unresolvedPromise FIRST then()', innerValue)) // the then() handler is called when the promise is resolved
+unresolvedPromise.then(innerValue => console.log('unresolvedPromise SECOND then()', unresolvedPromise))
+resolvedPromise.then(innerValue => console.log('resolvedPromise\'s then()', innerValue))
+
+console.log('unresolvedPromise state is: ', unresolvedPromise)
+console.log('LAST LINE IN THIS FILE')
+```
+
+```javascript
+// `Promise.all()` creates a Promise that is resolved when all promises are resolved
+
+let promise1 = Promise.reject('Reject');
+
+let promise2 = Promise.resolve('Resolve');
+
+Promise.all([promise1, promise2])
+  .then(done => console.log('Done', done))
+  .catch((err)=>{console.log("ERROR",err)})
+
+console.log('LAST LINE IN THIS FILE');
+```
+
+**References**
+- https://nodejs.dev/understanding-javascript-promises
+- https://www.vojtechruzicka.com/javascript-async-await
+- http://javascript.info/promise-basics
+- http://javascript.info/async-await
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+- https://javascript.info/promise-chaining
+- https://developer.mozilla.org/he/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 ## async/await
