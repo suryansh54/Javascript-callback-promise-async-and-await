@@ -8,6 +8,12 @@ A callback in which the code execution waits for an event before continuing. | A
 Code execution waits for the event before continuing. | Do not block the program from the code execution.
 Programmer can use synchronous callbacks when it is necessary to execute tasks in a sequence and when it does not require much time for execution. | Programmer can use asynchronous callbacks when the tasks are not dependent on each other and when it takes time for execution.
 
+### Synchronous
+<img src="/assets/synchronous.jpeg" alt="Synchronous image" width="350">
+
+### Asynchronous
+<img src="/assets/asynchronous_callbacks.jpeg" alt="Asynchronous image" width="300">
+
 ## Callback
 
 JavaScript is synchronous by default, and is single threaded. This means that code cannot create new threads and run in parallel. Find out what asynchronous code means and how it looks like
@@ -64,7 +70,8 @@ setTimeout(() => {
 	</li>
 </ul>
 
-[Promise image](/assets/promises.png)
+<center><img src="/assets/promises.png" alt="Promise image"></center>
+<img src="/assets/sromises.jpeg" alt="Asynchronous image" width="300">
 
 **Question** Which JS APIs use promises?
 In addition to your own code and libraries code, promises are used by standard modern Web APIs such as:
