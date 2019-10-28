@@ -49,14 +49,14 @@ setTimeout(() => {
 ## Promise
 
 <ul>
-  <li>The **Promise** object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.</li>
-  <li>A **Promise** is a special kind of javascript object which contains another object</li>
-  <li>**Promises are eager**, meaning that a promise will start doing whatever task you give it as soon as the promise constructor is invoked. If you need lazy, check out observables or tasks.</li>
+<li>The <b>Promise</b> object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.</li>
+  <li>A <b>Promise</b> is a special kind of javascript object which contains another object</li>
+  <li><b>Promises are eager</b>, meaning that a promise will start doing whatever task you give it as soon as the promise constructor is invoked. If you need lazy, check out observables or tasks.</li>
   <li>A Promise is in one of these states:
     <ul>
-      <li>**pending**: initial state, neither fulfilled nor rejected.</li>
-      <li>**fulfilled**: meaning that the operation completed successfully.</li>
-      <li>**rejected**: meaning that the operation failed.</li>
+      <li><b>pending</b>: initial state, neither fulfilled nor rejected.</li>
+      <li><b>fulfilled</b>: meaning that the operation completed successfully.</li>
+      <li><b>rejected</b>: meaning that the operation failed.</li>
     </ul>
   </li>
 </ul>
