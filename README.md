@@ -48,4 +48,90 @@ setTimeout(() => {
 
 ### Promise
 
+<ul>
+  <li>The **Promise** object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.</li>
+  <li>A **Promise** is a special kind of javascript object which contains another object</li>
+  <li>**Promises are eager**, meaning that a promise will start doing whatever task you give it as soon as the promise constructor is invoked. If you need lazy, check out observables or tasks.</li>
+  <li>A Promise is in one of these states:
+    <ul>
+      <li>**pending**: initial state, neither fulfilled nor rejected.</li>
+      <li>**fulfilled**: meaning that the operation completed successfully.</li>
+      <li>**rejected**: meaning that the operation failed.</li>
+    </ul>
+  </li>
+</ul>
+
+A **Simple** way to create a promise:
+
+```javascript
+Promise.resolve(2)
+```
+
+```javascript
+let someObject={ a: 1 }
+Promise.resolve(someObject)
+```
+
+```javascript
+var promise1 = new Promise(function(resolve, reject) {
+  setTimeout(function() {
+    resolve('foo');
+  }, 300);
+});
+
+promise1.then(function(value) {
+  console.log(value);
+  // expected output: "foo"
+});
+
+console.log(promise1);
+// expected output: [object Promise]
+```
+
+As the Promise.prototype.then() and Promise.prototype.catch() methods return promises, they can be chained.
+
+```javascript
+var promise = 'fail';
+var cherryPromise = new Promise(function(resolve,reject){
+	if(promise == 'success'){
+		resolve("Resolved");
+	} else if(promise == 'fail'){
+		reject('Rejected');
+	} else {
+		console.log('XYZ');
+	}
+});
+cherryPromise.then(function(data){
+	console.log(data);
+}).catch(function(data){
+	console.log(data);
+}).finally(function(){
+	console.log('Finally');
+});
+
+// Rejected
+// Finally
+// If promise is resolved so the output is Resolved and when the promise is fail
+// It return rejected and in case of nothing it will be pending
+```
+
+```javascript
+new Promise(function(resolve, reject) {
+  setTimeout(() => resolve(2), 1000);
+}).then(function(result) {
+  console.log(result); // 2
+  return result * 2;
+}).then(function(result) {
+  console.log(result); // 4
+  return result * 3;
+}).then(function(result) {
+  console.log(result); // 12
+  return result * 4;
+});
+
+// 2
+// 4
+// 12
+```
+
 ### async/await
